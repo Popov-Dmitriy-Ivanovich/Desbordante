@@ -4,50 +4,48 @@
 #include <limits>
 #include <sstream>
 
-
-
 #include "imetrizable_type.h"
 #include "type.h"
 namespace model {
 
 class INumericType : public IMetrizableType {
 public:
-    using NumericBinop = std::byte* (INumericType::*)(std::byte const*, std::byte const*, std::byte*) const;
+    using NumericBinop = std::byte* (INumericType::*)(std::byte const*, std::byte const*,
+                                                      std::byte*) const;
 
     explicit INumericType(TypeId id) noexcept : IMetrizableType(id) {}
 
-    virtual void CastTo(std::byte*& value, INumericType const& to)=0;
-    virtual void CastTo(std::byte*& value, TypeId to_type) =0;
+    virtual void CastTo(std::byte*& value, INumericType const& to) = 0;
+    virtual void CastTo(std::byte*& value, TypeId to_type) = 0;
 
     template <typename T>
-    T GetValueAs(std::byte const* value) const{
-        switch (this->GetTypeId())
-        {
-            case TypeId::kDouble:{
+    T GetValueAs(std::byte const* value) const {
+        switch (this->GetTypeId()) {
+            case TypeId::kDouble: {
                 model::Double data = *reinterpret_cast<const model::Double*>(value);
                 return static_cast<T>(data);
-            }  break;
-            case TypeId::kInt:{
+            } break;
+            case TypeId::kInt: {
                 model::Int data = *reinterpret_cast<const model::Int*>(value);
                 return static_cast<T>(data);
-            }  break;
+            } break;
             default:
                 throw std::logic_error("undefined type conversion");
-            }
+        }
     }
 
     template <typename T>
-    std::byte* MakeFromArithmetic(T value) const{
-        switch (this->GetTypeId())
-        {
-        case TypeId::kDouble:{
-            return reinterpret_cast<std::byte*>(new model::Double (static_cast<model::Double>(value)));
-        }  break;
-        case TypeId::kInt:{
-            return reinterpret_cast<std::byte*>(new model::Int (static_cast<model::Int>(value)));
-        }  break;
-        default:
-            throw std::logic_error("undefined type conversion");
+    std::byte* MakeFromArithmetic(T value) const {
+        switch (this->GetTypeId()) {
+            case TypeId::kDouble: {
+                return reinterpret_cast<std::byte*>(
+                        new model::Double(static_cast<model::Double>(value)));
+            } break;
+            case TypeId::kInt: {
+                return reinterpret_cast<std::byte*>(new model::Int(static_cast<model::Int>(value)));
+            } break;
+            default:
+                throw std::logic_error("undefined type conversion");
         }
     }
 
@@ -78,7 +76,6 @@ protected:
     }
 
 public:
-    
     using UnderlyingType = T;
 
     static constexpr T kMinValue = std::numeric_limits<T>::lowest();
@@ -205,3 +202,4 @@ std::byte* NumericType<T>::Abs(std::byte const* num, std::byte* res) const {
     return res;
 }
 }  // namespace model
+
