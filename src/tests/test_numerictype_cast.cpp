@@ -176,6 +176,8 @@ TEST(NumericCast, ArifmeticDoubleCastedToInt) {  // DoubleType -> IntType (+,-,*
     delete reinterpret_cast<model::Int*>(sub_res);
     delete reinterpret_cast<model::Int*>(mult_res);
     delete reinterpret_cast<model::Int*>(div_res);
+    delete reinterpret_cast<model::Int*>(a);
+    delete reinterpret_cast<model::Int*>(b);
 }
 TEST(NumericCast, ArifmeticIntCastedToDouble) {  // IntType -> DoubleType (+,-,*,/)
     std::byte *sum_res, *mult_res, *div_res, *sub_res;
@@ -195,14 +197,16 @@ TEST(NumericCast, ArifmeticIntCastedToDouble) {  // IntType -> DoubleType (+,-,*
     dbl_ref.Sub(a, b, sub_res);
     dbl_ref.Mul(a, b, mult_res);
     dbl_ref.Div(a, b, div_res);
-    ASSERT_TRUE(dbl_ref.GetValueAs<model::Int>(sum_res) == 28 + 56);
-    ASSERT_TRUE(dbl_ref.GetValueAs<model::Int>(sub_res) == 28 - 56);
-    ASSERT_TRUE(dbl_ref.GetValueAs<model::Int>(div_res) == 28 / 56);
-    ASSERT_TRUE(dbl_ref.GetValueAs<model::Int>(mult_res) == 28 * 56);
+    ASSERT_TRUE(dbl_ref.GetValueAs<model::Double>(sum_res) == 28.0 + 56.0);
+    ASSERT_TRUE(dbl_ref.GetValueAs<model::Double>(sub_res) == 28.0 - 56.0);
+    ASSERT_TRUE(dbl_ref.GetValueAs<model::Double>(div_res) == 28.0 / 56.0);
+    ASSERT_TRUE(dbl_ref.GetValueAs<model::Double>(mult_res) == 28.0 * 56.0);
     delete reinterpret_cast<model::Double*>(sum_res);
     delete reinterpret_cast<model::Double*>(sub_res);
     delete reinterpret_cast<model::Double*>(mult_res);
     delete reinterpret_cast<model::Double*>(div_res);
+    delete reinterpret_cast<model::Double*>(a);
+    delete reinterpret_cast<model::Double*>(b);
 }
 
 TEST(NumericCast, CastDoubleToBuiltin) {  // DoubleType -> double,int,float
