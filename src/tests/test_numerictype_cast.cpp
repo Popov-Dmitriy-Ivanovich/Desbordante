@@ -9,24 +9,24 @@ TEST(NumericCast, unit_GetValueAsDouble) {
     std::byte* val = reinterpret_cast<std::byte*>(new model::Double(15.15));
     model::DoubleType dbl_type;
     model::INumericType& t_ref = dbl_type;
-    ASSERT_TRUE(t_ref.GetValueAs<model::Double>(val) == 15.15);
+    EXPECT_TRUE(t_ref.GetValueAs<model::Double>(val) == 15.15);
     delete reinterpret_cast<model::Double*>(val);
     val = reinterpret_cast<std::byte*>(new model::Int(15));
     model::IntType int_type;
     t_ref = int_type;
-    ASSERT_TRUE(t_ref.GetValueAs<model::Double>(val) == 15.0);
+    EXPECT_TRUE(t_ref.GetValueAs<model::Double>(val) == 15.0);
     delete reinterpret_cast<model::Int*>(val);
 }
 TEST(NumericCast, unit_GetValueAsInt) {
     std::byte* val = reinterpret_cast<std::byte*>(new model::Double(15.15));
     model::DoubleType dbl_type;
     model::INumericType& t_ref = dbl_type;
-    ASSERT_TRUE(t_ref.GetValueAs<model::Int>(val) == 15);
+    EXPECT_TRUE(t_ref.GetValueAs<model::Int>(val) == 15);
     delete reinterpret_cast<model::Double*>(val);
     val = reinterpret_cast<std::byte*>(new model::Int(15));
     model::IntType int_type;
     t_ref = int_type;
-    ASSERT_TRUE(t_ref.GetValueAs<model::Int>(val) == 15);
+    EXPECT_TRUE(t_ref.GetValueAs<model::Int>(val) == 15);
     delete reinterpret_cast<model::Int*>(val);
 }
 TEST(NumericCast, unit_MakeFromArithmetic) {
@@ -37,20 +37,20 @@ TEST(NumericCast, unit_MakeFromArithmetic) {
     model::Double dbl_val = 15.15;
 
     std::byte* res = type_ref.MakeFromArithmetic(dbl_val);
-    ASSERT_TRUE(*reinterpret_cast<model::Int*>(res) == 15);
+    EXPECT_TRUE(*reinterpret_cast<model::Int*>(res) == 15);
     delete reinterpret_cast<model::Int*>(res);
 
     res = type_ref.MakeFromArithmetic(int_val);
-    ASSERT_TRUE(*reinterpret_cast<model::Int*>(res) == 15);
+    EXPECT_TRUE(*reinterpret_cast<model::Int*>(res) == 15);
     delete reinterpret_cast<model::Int*>(res);
 
     type_ref = dbl_type;
     res = type_ref.MakeFromArithmetic(dbl_val);
-    ASSERT_TRUE(*reinterpret_cast<model::Double*>(res) == 15.15);
+    EXPECT_TRUE(*reinterpret_cast<model::Double*>(res) == 15.15);
     delete reinterpret_cast<model::Double*>(res);
 
     res = type_ref.MakeFromArithmetic(int_val);
-    ASSERT_TRUE(*reinterpret_cast<model::Double*>(res) == 15);
+    EXPECT_TRUE(*reinterpret_cast<model::Double*>(res) == 15);
     delete reinterpret_cast<model::Double*>(res);
 }
 TEST(NumericCast, unit_DoubleType_CastTo) {
@@ -59,12 +59,12 @@ TEST(NumericCast, unit_DoubleType_CastTo) {
     std::byte* val = reinterpret_cast<std::byte*>(new model::Double(15.15));
     type_ref.CastTo(val, model::IntType());
     model::Int res = *reinterpret_cast<model::Int*>(val);
-    ASSERT_EQ(res, 15);
+    EXPECT_EQ(res, 15);
     delete reinterpret_cast<model::Int*>(val);
     val = reinterpret_cast<std::byte*>(new model::Double(15.15));
     type_ref.CastTo(val, model::DoubleType());
     model::Double dbl_res = *reinterpret_cast<model::Double*>(val);
-    ASSERT_EQ(dbl_res, 15.15);
+    EXPECT_EQ(dbl_res, 15.15);
     delete reinterpret_cast<model::Double*>(val);
 }
 TEST(NumericCast, unit_IntType_CastTo) {
@@ -73,12 +73,12 @@ TEST(NumericCast, unit_IntType_CastTo) {
     std::byte* val = reinterpret_cast<std::byte*>(new model::Int(15));
     type_ref.CastTo(val, model::DoubleType());
     model::Double res = *reinterpret_cast<model::Double*>(val);
-    ASSERT_EQ(res, 15);
+    EXPECT_EQ(res, 15);
     delete reinterpret_cast<model::Double*>(val);
     val = reinterpret_cast<std::byte*>(new model::Int(15));
     type_ref.CastTo(val, model::IntType());
     model::Int int_res = *reinterpret_cast<model::Int*>(val);
-    ASSERT_EQ(int_res, 15);
+    EXPECT_EQ(int_res, 15);
     delete reinterpret_cast<model::Int*>(val);
 }
 TEST(NumericCast, MakeIntFromDouble) {  // double -> IntType
@@ -86,7 +86,7 @@ TEST(NumericCast, MakeIntFromDouble) {  // double -> IntType
     model::IntType int_type;
     model::INumericType& int_type_ref = int_type;
     std::byte* get_val = int_type_ref.MakeFromArithmetic(test_val);
-    ASSERT_TRUE(int_type_ref.GetValueAs<model::Int>(get_val) == (model::Int)(test_val));
+    EXPECT_TRUE(int_type_ref.GetValueAs<model::Int>(get_val) == (model::Int)(test_val));
     delete reinterpret_cast<model::Int*>(get_val);
 }
 TEST(NumericCast, MakeIntFromInt) {  // int -> IntType
@@ -94,7 +94,7 @@ TEST(NumericCast, MakeIntFromInt) {  // int -> IntType
     model::IntType int_type;
     model::INumericType& int_type_ref = int_type;
     std::byte* get_val = int_type_ref.MakeFromArithmetic(test_val);
-    ASSERT_TRUE(int_type_ref.GetValueAs<model::Int>(get_val) == (model::Int)(test_val));
+    EXPECT_TRUE(int_type_ref.GetValueAs<model::Int>(get_val) == (model::Int)(test_val));
     delete reinterpret_cast<model::Int*>(get_val);
 }
 TEST(NumericCast, MakeDoubleFromDouble) {  // double -> DoubleType
@@ -102,7 +102,7 @@ TEST(NumericCast, MakeDoubleFromDouble) {  // double -> DoubleType
     model::DoubleType int_type;
     model::INumericType& int_type_ref = int_type;
     std::byte* get_val = int_type_ref.MakeFromArithmetic(test_val);
-    ASSERT_TRUE(int_type_ref.GetValueAs<model::Double>(get_val) == (model::Double)(test_val));
+    EXPECT_TRUE(int_type_ref.GetValueAs<model::Double>(get_val) == (model::Double)(test_val));
     delete reinterpret_cast<model::Double*>(get_val);
 }
 TEST(NumericCast, MakeDoubleFromInt) {  // int -> DobuleType
@@ -110,7 +110,7 @@ TEST(NumericCast, MakeDoubleFromInt) {  // int -> DobuleType
     model::DoubleType int_type;
     model::INumericType& int_type_ref = int_type;
     std::byte* get_val = int_type_ref.MakeFromArithmetic(test_val);
-    ASSERT_TRUE(int_type_ref.GetValueAs<model::Double>(get_val) == (model::Double)(test_val));
+    EXPECT_TRUE(int_type_ref.GetValueAs<model::Double>(get_val) == (model::Double)(test_val));
     delete reinterpret_cast<model::Double*>(get_val);
 }
 TEST(NumericCast, CastDoubleToInt) {  // DoubleType -> IntType
@@ -121,7 +121,7 @@ TEST(NumericCast, CastDoubleToInt) {  // DoubleType -> IntType
     std::byte* val = dbl_ref.MakeFromArithmetic(12.8f);
 
     dbl_ref.CastTo(val, int_ref);
-    ASSERT_EQ(int_ref.GetValueAs<model::Int>(val), 12);
+    EXPECT_EQ(int_ref.GetValueAs<model::Int>(val), 12);
     delete reinterpret_cast<model::Int*>(val);
 }
 TEST(NumericCast, CastDoubleToDouble) {  // DoubleType -> DoubleType
@@ -129,7 +129,7 @@ TEST(NumericCast, CastDoubleToDouble) {  // DoubleType -> DoubleType
     model::INumericType& dbl_ref = dbl_type;
     std::byte* val = dbl_ref.MakeFromArithmetic(12.8);
     dbl_ref.CastTo(val, dbl_ref);
-    ASSERT_EQ(dbl_ref.GetValueAs<model::Double>(val), 12.8);
+    EXPECT_EQ(dbl_ref.GetValueAs<model::Double>(val), 12.8);
     delete reinterpret_cast<model::Double*>(val);
 }
 TEST(NumericCast, CastIntToDouble) {  // IntType -> DoubleType
@@ -139,7 +139,7 @@ TEST(NumericCast, CastIntToDouble) {  // IntType -> DoubleType
     model::INumericType& int_ref = int_type;
     std::byte* val = int_ref.MakeFromArithmetic(12);
     int_ref.CastTo(val, dbl_ref);
-    ASSERT_EQ(dbl_ref.GetValueAs<model::Double>(val), 12);
+    EXPECT_EQ(dbl_ref.GetValueAs<model::Double>(val), 12);
     delete reinterpret_cast<model::Double*>(val);
 }
 TEST(NumericCast, CastIntToInt) {  // IntType -> IntType
@@ -147,7 +147,7 @@ TEST(NumericCast, CastIntToInt) {  // IntType -> IntType
     model::INumericType& int_ref = int_type;
     std::byte* val = int_ref.MakeFromArithmetic(12);
     int_ref.CastTo(val, int_ref);
-    ASSERT_EQ(int_ref.GetValueAs<model::Int>(val), 12);
+    EXPECT_EQ(int_ref.GetValueAs<model::Int>(val), 12);
     delete reinterpret_cast<model::Int*>(val);
 }
 TEST(NumericCast, ArifmeticDoubleCastedToInt) {  // DoubleType -> IntType (+,-,*,/)
@@ -168,10 +168,10 @@ TEST(NumericCast, ArifmeticDoubleCastedToInt) {  // DoubleType -> IntType (+,-,*
     int_ref.Sub(a, b, sub_res);
     int_ref.Mul(a, b, mult_res);
     int_ref.Div(a, b, div_res);
-    ASSERT_TRUE(int_ref.GetValueAs<model::Int>(sum_res) == 28 + 56);
-    ASSERT_TRUE(int_ref.GetValueAs<model::Int>(sub_res) == 28 - 56);
-    ASSERT_TRUE(int_ref.GetValueAs<model::Int>(div_res) == 28 / 56);
-    ASSERT_TRUE(int_ref.GetValueAs<model::Int>(mult_res) == 28 * 56);
+    EXPECT_TRUE(int_ref.GetValueAs<model::Int>(sum_res) == 28 + 56);
+    EXPECT_TRUE(int_ref.GetValueAs<model::Int>(sub_res) == 28 - 56);
+    EXPECT_TRUE(int_ref.GetValueAs<model::Int>(div_res) == 28 / 56);
+    EXPECT_TRUE(int_ref.GetValueAs<model::Int>(mult_res) == 28 * 56);
     delete reinterpret_cast<model::Int*>(sum_res);
     delete reinterpret_cast<model::Int*>(sub_res);
     delete reinterpret_cast<model::Int*>(mult_res);
@@ -197,10 +197,10 @@ TEST(NumericCast, ArifmeticIntCastedToDouble) {  // IntType -> DoubleType (+,-,*
     dbl_ref.Sub(a, b, sub_res);
     dbl_ref.Mul(a, b, mult_res);
     dbl_ref.Div(a, b, div_res);
-    ASSERT_TRUE(dbl_ref.GetValueAs<model::Double>(sum_res) == 28.0 + 56.0);
-    ASSERT_TRUE(dbl_ref.GetValueAs<model::Double>(sub_res) == 28.0 - 56.0);
-    ASSERT_TRUE(dbl_ref.GetValueAs<model::Double>(div_res) == 28.0 / 56.0);
-    ASSERT_TRUE(dbl_ref.GetValueAs<model::Double>(mult_res) == 28.0 * 56.0);
+    EXPECT_TRUE(dbl_ref.GetValueAs<model::Double>(sum_res) == 28.0 + 56.0);
+    EXPECT_TRUE(dbl_ref.GetValueAs<model::Double>(sub_res) == 28.0 - 56.0);
+    EXPECT_TRUE(dbl_ref.GetValueAs<model::Double>(div_res) == 28.0 / 56.0);
+    EXPECT_TRUE(dbl_ref.GetValueAs<model::Double>(mult_res) == 28.0 * 56.0);
     delete reinterpret_cast<model::Double*>(sum_res);
     delete reinterpret_cast<model::Double*>(sub_res);
     delete reinterpret_cast<model::Double*>(mult_res);
@@ -214,9 +214,9 @@ TEST(NumericCast, CastDoubleToBuiltin) {  // DoubleType -> double,int,float
     model::INumericType& dbl_ref = dbl_type;
     std::byte* val = dbl_ref.MakeFromArithmetic(122.41);
 
-    ASSERT_EQ(dbl_ref.GetValueAs<model::Double>(val), 122.41);
-    ASSERT_EQ(dbl_ref.GetValueAs<float>(val), 122.41f);
-    ASSERT_EQ(dbl_ref.GetValueAs<model::Int>(val), 122);
+    EXPECT_EQ(dbl_ref.GetValueAs<model::Double>(val), 122.41);
+    EXPECT_EQ(dbl_ref.GetValueAs<float>(val), 122.41f);
+    EXPECT_EQ(dbl_ref.GetValueAs<model::Int>(val), 122);
     delete reinterpret_cast<model::Double*>(val);
 }
 TEST(NumericCast, CastIntToBuiltin) {  // IntType -> double,int,float
@@ -224,9 +224,9 @@ TEST(NumericCast, CastIntToBuiltin) {  // IntType -> double,int,float
     model::INumericType& dbl_ref = dbl_type;
     std::byte* val = dbl_ref.MakeFromArithmetic(122);
 
-    ASSERT_TRUE(dbl_ref.GetValueAs<model::Double>(val) == 122.0);
-    ASSERT_TRUE(dbl_ref.GetValueAs<float>(val) == 122.0f);
-    ASSERT_TRUE(dbl_ref.GetValueAs<model::Int>(val) == 122);
+    EXPECT_TRUE(dbl_ref.GetValueAs<model::Double>(val) == 122.0);
+    EXPECT_TRUE(dbl_ref.GetValueAs<float>(val) == 122.0f);
+    EXPECT_TRUE(dbl_ref.GetValueAs<model::Int>(val) == 122);
     delete reinterpret_cast<model::Int*>(val);
 }
 
