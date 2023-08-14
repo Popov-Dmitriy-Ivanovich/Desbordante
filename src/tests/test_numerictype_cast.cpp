@@ -60,7 +60,7 @@ TEST(NumericCast, unit_DoubleType_CastTo) {
     type_ref.CastTo(val, model::IntType());
     model::Int res = *reinterpret_cast<model::Int*>(val);
     ASSERT_EQ(res, 15);
-    delete reinterpret_cast<model::Double*>(val);
+    delete reinterpret_cast<model::Int*>(val);
     val = reinterpret_cast<std::byte*>(new model::Double(15.15));
     type_ref.CastTo(val, model::DoubleType());
     model::Double dbl_res = *reinterpret_cast<model::Double*>(val);
