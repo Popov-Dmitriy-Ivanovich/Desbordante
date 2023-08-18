@@ -6,48 +6,20 @@
 
 #include "imetrizable_type.h"
 #include "type.h"
+
 namespace model {
 
 class INumericType : public IMetrizableType {
 public:
-    using NumericBinop = std::byte* (INumericType::*)(std::byte const*, std::byte const*,
-                                                      std::byte*) const;
+    using NumericBinop = std::byte* (INumericType::*)(std::byte const*, std::byte const*, std::byte*) const;    
 
     explicit INumericType(TypeId id) noexcept : IMetrizableType(id) {}
 
-    virtual void CastTo(std::byte*& value, INumericType const& to) = 0;
-    virtual void CastTo(std::byte*& value, TypeId to_type) = 0;
+    inline void CastTo(std::byte* value, TypeId to_type) const;
+    inline void CastTo(std::byte* value, INumericType const& to) const;
 
     template <typename T>
-    T GetValueAs(std::byte const* value) const {
-        switch (this->GetTypeId()) {
-            case TypeId::kDouble: {
-                model::Double data = *reinterpret_cast<const model::Double*>(value);
-                return static_cast<T>(data);
-            } break;
-            case TypeId::kInt: {
-                model::Int data = *reinterpret_cast<const model::Int*>(value);
-                return static_cast<T>(data);
-            } break;
-            default:
-                throw std::logic_error("undefined type conversion");
-        }
-    }
-
-    template <typename T>
-    std::byte* MakeFromArithmetic(T value) const {
-        switch (this->GetTypeId()) {
-            case TypeId::kDouble: {
-                return reinterpret_cast<std::byte*>(
-                        new model::Double(static_cast<model::Double>(value)));
-            } break;
-            case TypeId::kInt: {
-                return reinterpret_cast<std::byte*>(new model::Int(static_cast<model::Int>(value)));
-            } break;
-            default:
-                throw std::logic_error("undefined type conversion");
-        }
-    }
+    T GetValueAs(std::byte const* value) const;
 
     virtual std::byte* Negate(std::byte const* value, std::byte* res) const = 0;
     virtual std::byte* Add(std::byte const* l, std::byte const* r, std::byte* res) const = 0;
@@ -63,7 +35,92 @@ public:
 
     [[nodiscard]] virtual std::byte const* Min() const = 0;
     [[nodiscard]] virtual std::byte const* Max() const = 0;
+private:
+    inline void IntCastTo_(std::byte* value, TypeId to_type) const;
+    inline void DoubleCastTo_(std::byte* value, TypeId to_type) const;
 };
+
+
+
+
+
+template <typename T>
+T INumericType::GetValueAs(std::byte const* value) const {
+    switch (GetTypeId()) {
+        case TypeId::kDouble: {
+            model::Double data = INumericType::GetValue<Double>(value);
+            return static_cast<T>(data);
+        }
+        case TypeId::kInt: {
+            model::Int data = INumericType::GetValue<Int>(value);
+            return static_cast<T>(data);
+        }
+        default:
+            throw std::logic_error("undefined type conversion");
+    }
+}
+
+inline void INumericType::CastTo(std::byte* value, INumericType const& to) const {
+    this->CastTo(value,to.GetTypeId());
+}
+
+inline void INumericType::CastTo(std::byte* value, TypeId to_type) const {
+    switch (GetTypeId())
+    {
+    case TypeId::kDouble: {
+        INumericType::DoubleCastTo_(value,to_type);
+        break;
+    }
+    case TypeId::kInt: {
+        INumericType::IntCastTo_(value,to_type);
+        break;
+    }
+    default: {
+        throw std::logic_error("unrecognized input type");
+        break;
+    }
+    }
+}
+
+inline void INumericType::IntCastTo_(std::byte* value, TypeId to_type) const {
+    if (value == nullptr) {
+        throw std::logic_error("cannot convert nullpointer");
+    }
+    switch (to_type) {
+        case TypeId::kDouble: {
+            model::Double data = INumericType::GetValueAs<model::Double>(value);
+            INumericType::GetValue<model::Double>(value)=data;
+            break;
+        }
+        case TypeId::kInt: {
+            break;
+        }
+        default: {
+            throw std::logic_error("type conversion unsupported");
+            break;
+        }
+    }
+}
+
+inline void INumericType::DoubleCastTo_(std::byte* value, TypeId to_type) const {
+    if (value == nullptr) {
+        throw std::logic_error("cannot convert nullpointer");
+    }
+    switch (to_type) {
+        case TypeId::kInt: {
+            model::Int data = INumericType::GetValueAs<model::Int>(value);                
+            INumericType::GetValue<model::Int>(value)=data;
+            break;
+        }
+        case TypeId::kDouble: {
+            break;
+        } 
+        default: {
+            throw std::logic_error("type conversion unsupported");
+            break;
+        } 
+    }
+}
 
 template <typename T>
 class NumericType : public INumericType {
@@ -74,6 +131,7 @@ protected:
     static T& GetValue(std::byte* buf) {
         return INumericType::GetValue<T>(buf);
     }
+
 
 public:
     using UnderlyingType = T;
@@ -201,4 +259,5 @@ std::byte* NumericType<T>::Abs(std::byte const* num, std::byte* res) const {
     GetValue(res) = std::abs(GetValue(num));
     return res;
 }
+
 }  // namespace model

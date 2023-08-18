@@ -4,7 +4,7 @@ set(BINARY ${CMAKE_PROJECT_NAME}_test)
 enable_testing()
 
 # building tests
-file(GLOB_RECURSE test_sources "*.h*" "main.cpp*" "test_numerictype_cast.cpp" )
+file(GLOB_RECURSE test_sources "*.h*" "*.cpp*" )
 add_executable(${BINARY} ${test_sources})
 add_test(NAME ${BINARY} COMMAND ${BINARY})
 
