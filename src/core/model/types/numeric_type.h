@@ -4,9 +4,10 @@
 #include <limits>
 #include <sstream>
 
+
+
 #include "imetrizable_type.h"
 #include "type.h"
-
 namespace model {
 
 class INumericType : public IMetrizableType {
@@ -15,11 +16,13 @@ public:
 
     explicit INumericType(TypeId id) noexcept : IMetrizableType(id) {}
 
+
     inline void CastTo(std::byte* value, TypeId to_type) const;
     inline void CastTo(std::byte* value, INumericType const& to) const;
 
     template <typename T>
     T GetValueAs(std::byte const* value) const;
+
 
     virtual std::byte* Negate(std::byte const* value, std::byte* res) const = 0;
     virtual std::byte* Add(std::byte const* l, std::byte const* r, std::byte* res) const = 0;
@@ -134,6 +137,7 @@ protected:
 
 
 public:
+    
     using UnderlyingType = T;
 
     static constexpr T kMinValue = std::numeric_limits<T>::lowest();
@@ -259,5 +263,4 @@ std::byte* NumericType<T>::Abs(std::byte const* num, std::byte* res) const {
     GetValue(res) = std::abs(GetValue(num));
     return res;
 }
-
 }  // namespace model

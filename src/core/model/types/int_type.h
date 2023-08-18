@@ -2,9 +2,7 @@
 
 #include "double_type.h"
 #include "numeric_type.h"
-
 namespace model {
-
 class IntType final : public NumericType<Int> {
 public:
 
