@@ -50,7 +50,7 @@ TEST_F(NumericCast, unit_DoubleType_CastTo) {  // TODO changes data inside point
     ASSERT_DOUBLE_EQ(dbl_type_ref.GetValueAs<model::Double>(val), *dbl_a_ptr.get());
     model::Int tmp = (model::Int)(*dbl_a_ptr.get());
     dbl_type_ref.CastTo(val, model::IntType());
-    ASSERT_DOUBLE_EQ(dbl_type_ref.GetValueAs<model::Int>(val), tmp);
+    ASSERT_DOUBLE_EQ(int_type_ref.GetValueAs<model::Int>(val), tmp);
 }
 TEST_F(NumericCast, unit_IntType_CastTo) {
     val = reinterpret_cast<std::byte*>(int_a_ptr.get());
