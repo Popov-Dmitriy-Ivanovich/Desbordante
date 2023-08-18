@@ -32,19 +32,19 @@ protected:
 
     std::byte* val;
 };
-TEST_F(NumericCast, unit_GetValueAsDouble) {
+TEST_F(NumericCast, GetValueAsDouble) {
     val = reinterpret_cast<std::byte*>(dbl_a_ptr.get());
     ASSERT_DOUBLE_EQ(dbl_type_ref.GetValueAs<model::Double>(val), *dbl_a_ptr.get());
     val = reinterpret_cast<std::byte*>(int_a_ptr.get());
     ASSERT_DOUBLE_EQ(int_type_ref.GetValueAs<model::Double>(val), *int_a_ptr.get());
 }
-TEST_F(NumericCast, unit_GetValueAsInt) {
+TEST_F(NumericCast, GetValueAsInt) {
     val = reinterpret_cast<std::byte*>(dbl_a_ptr.get());
     ASSERT_EQ(dbl_type_ref.GetValueAs<model::Int>(val), (model::Int)*dbl_a_ptr.get());
     val = reinterpret_cast<std::byte*>(int_a_ptr.get());
     ASSERT_EQ(int_type_ref.GetValueAs<model::Int>(val), *int_a_ptr.get());
 }
-TEST_F(NumericCast, unit_DoubleType_CastTo) {  // TODO changes data inside pointer
+TEST_F(NumericCast, DoubleType_CastTo) {  // TODO changes data inside pointer
     val = reinterpret_cast<std::byte*>(dbl_a_ptr.get());
     dbl_type_ref.CastTo(val, model::DoubleType());
     ASSERT_DOUBLE_EQ(dbl_type_ref.GetValueAs<model::Double>(val), *dbl_a_ptr.get());
@@ -52,7 +52,7 @@ TEST_F(NumericCast, unit_DoubleType_CastTo) {  // TODO changes data inside point
     dbl_type_ref.CastTo(val, model::IntType());
     ASSERT_DOUBLE_EQ(int_type_ref.GetValueAs<model::Int>(val), tmp);
 }
-TEST_F(NumericCast, unit_IntType_CastTo) {
+TEST_F(NumericCast, IntType_CastTo) {
     val = reinterpret_cast<std::byte*>(int_a_ptr.get());
     int_type_ref.CastTo(val, model::IntType());
     ASSERT_EQ(int_type_ref.GetValueAs<model::Int>(val), *int_a_ptr.get());
